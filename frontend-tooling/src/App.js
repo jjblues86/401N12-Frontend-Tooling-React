@@ -1,32 +1,55 @@
 import React from 'react';
 import Header from './Header';
-import { say } from 'cowsay-browser';
+import cowsay from 'cowsay-browser';
+import faker from 'faker';
 import './App.css';
 
 export default class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
-    // this.state.content = 'I am not sure what to do here';
+    // Jerome - when the state changes, the component re-renders
+    this.state = {
+        content: '',
+        option: ''
+
+    };
+
+  }
+
+  handleCowSay = () => {
+      this.setState({
+          content: cowsay.say({
+              text: faker.lorem.words(10),
+              cow: '',
+              eyes: 'oo',
+              T: ';;',
+              f: 'mutilated.cow'
+          })
+      })
+  }
+
+  handleMenu = () => {
+      this.setState((previousState) => {
+          return {
+              cowfile: previousState.cowfile,
+          }
+      })
   }
 
 
-  handleCowSay = () => {
-      console.log(say({text: 'generate something in the browser'}));
-      }
-
       render()
       {
-          return (
-
-              <main>
-                  <Header/>
-                  {/*<p>The content is: {this.state.content}</p>*/}
-                  <button onClick={this.handleCowSay}>Click Me</button>
-                  {/*<button>Click Me</button>*/}
-              </main>
-          )
+          return <main>
+              <Header/>
+              <pre>{this.state.content}</pre>
+              <button onClick={this.handleCowSay}>Click Me</button>
+              <select>
+                  <option onClick={this.handleMenu} value="cow">Cow</option>
+              </select>
+          </main>
       }
-}
 
+  }
+
+  // TODO - work on the menu that enables you to change the type of cowfile currently being used
